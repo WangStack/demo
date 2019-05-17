@@ -1,0 +1,9 @@
+eclipse.preferences.version=1
+encoding//sql/crawlertweet.sql=UTF-8
+encoding//src/main/java/Test/aa.java=UTF-8
+encoding//src/main/java/cn/crawlerTweet/dao/DownLoadPdf.java=UTF-8
+encoding//src/main/java/cn/crawlerTweet/dao/ParseTool.java=UTF-8
+encoding//src/main/java/cn/crawlerTweet/service/DriverOperate.java=UTF-8
+encoding//src/main/java/cn/crawlerTweet/service/HtmlParseTool.java=UTF-8
+encoding//src/main/java/main/MyTimerTask.java=GBK
+encoding//src/test/java=UTF-8

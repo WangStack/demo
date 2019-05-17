@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace：命名空间，用于隔离sql，还有一个很重要的作用，后面会讲 -->
+<mapper namespace="cn.mapper.OperationMysqlMapper">
+
+	<!-- 获取 WebSite 规则 -->
+	<select id="getWebSite" resultType="cn.crawlerTweet.entity.WebSite">
+		SELECT
+			*
+		FROM
+			webSite
+	</select>
+
+	
+
+	<!-- 获取关键字 -->
+	<select id="queryKeyWords" resultType="cn.crawlerTweet.entity.Keywords">
+		SELECT
+			id,
+			keyword,
+			serchWhere,
+			state
+		FROM
+			keywords
+		WHERE
+			state = 1
+	</select>
+	<!-- 获取为异常时的关键字 -->
+	<select id="getExceptionKeyWords" resultType="cn.crawlerTweet.entity.Keywords">
+		SELECT
+			id,
+			keyword,
+			serchWhere,
+			state
+		FROM
+			keywords
+		WHERE
+			state = 1
+		AND
+			ifException = 1
+	</select>
+	
+	<update id="updateKeywords" >
+		UPDATE 
+			keywords 
+		SET
+			ifException = #{1}
+		WHERE
+			id = #{0}
+	</update>
+
+	<!-- 插入博主信息 -->
+	<insert id="insertBlogger" parameterType="cn.crawlerTweet.entity.Blogger">
+		INSERT INTO blogger(
+			id,
+			bloggerUrl,
+			bloggerName,
+			bloggerJob,
+			attentionNumber,
+			fansNumber,
+			tweetNumber )
+		 VALUES (
+			#{id},
+			#{bloggerUrl},
+			#{bloggerName},
+			#{bloggerJob},
+			#{attentionNumber},
+			#{fansNumber},
+			#{tweetNumber}
+		)
+	</insert>
+
+	<!-- 插入博主发出微博信息 -->
+	<insert id="insertBloggerTweet" parameterType="cn.crawlerTweet.entity.BloggerTweet">
+		INSERT INTO bloggertweet(
+			id,
+			bId,
+			tweetTitle,
+			tweetTime,
+			tweetVideoUrl,
+			tweetVideoName,
+			transpondNumber,
+			commentNumber,
+			likeNumber,
+			tweetIVPath )
+		VALUES (
+			#{id},
+			#{bId},
+			#{tweetTitle},
+			#{tweetTime},
+			#{tweetVideoUrl},
+			#{tweetVideoName},
+			#{transpondNumber},
+			#{commentNumber},
+			#{likeNumber},
+			#{tweetIVPath}
+		)
+	</insert>
+
+	<!-- 插入博主发出微博的图片url -->
+	<insert id="insertBloggerTweetImage" parameterType="cn.crawlerTweet.entity.BloggerTweetImage">
+		INSERT INTO bloggertweetimage(
+			id,
+			btId,
+			imageUrl,
+			imageName )
+		VALUES (
+			#{id},
+			#{btId},
+			#{imageUrl},
+			#{imageName}
+		)
+	</insert>
+
+	<!-- 插入 Video 信息 -->
+	<insert id="insertVideo" parameterType="cn.crawlerTweet.entity.Video">
+		INSERT INTO video(
+			id,
+			videoName,
+			videoImageUrl,
+			videoUrl,
+			videoPath,
+			videoTranspondNumber,
+			videoCommentNumber,
+			videoLikeNumber)
+		VALUES (
+			#{id},
+			#{videoName},
+			#{videoImageUrl},
+			#{videoUrl},
+			#{videoPath},
+			#{videoTranspondNumber},
+			#{videoCommentNumber},
+			#{videoLikeNumber}
+		)
+	</insert>
+
+	<!-- 插入Article(话题) -->
+	<insert id="insertArticle" parameterType="cn.crawlerTweet.entity.Article">
+		INSERT INTO article(
+			id,
+			url,
+			title,
+			blogger,
+			author,
+			time,
+			sourceUrl,
+			readNumber,
+			content,
+			pdfFilePath)
+		VALUES (
+			#{id},
+			#{url},
+			#{title},
+			#{blogger},
+			#{author},
+			#{time},
+			#{sourceUrl},
+			#{readNumber},
+			#{content},
+			#{pdfFilePath}
+		)
+	</insert>
+
+	<!-- 插入 Topic(主题) -->
+	<insert id="insertTopic" parameterType="cn.crawlerTweet.entity.Topic">
+		INSERT INTO topic(
+			id,
+			url,
+			topicName,
+			readNumber,
+			discussNumbaer,
+			lead )
+		VALUES (
+			#{id},
+			#{url},
+			#{topicName},
+			#{readNumber},
+			#{discussNumbaer},
+			#{lead}
+		)
+	</insert>
+
+	<!-- 插入 TopicTweet(主题微博) -->
+	<insert id="insertTopicTweet" parameterType="cn.crawlerTweet.entity.TopicTweet">
+		INSERT INTO topicTweet(
+			id,
+			tId,
+			topictweetBlogger,
+			topictweetTitle,
+			topicTweetTime,
+			topicTweetVideoUrl,
+			topicTweetVideoName,
+			topicTranspondNumber,
+			topicCommentNumber,
+			topicLikeNumber,
+			topicTweetIVPath )
+		VALUES(
+			#{id},
+			#{tId},
+			#{topictweetBlogger},
+			#{topictweetTitle},
+			#{topicTweetTime},
+			#{topicTweetVideoUrl},
+			#{topicTweetVideoName},
+			#{topicTranspondNumber},
+			#{topicCommentNumber},
+			#{topicLikeNumber},
+			#{topicTweetIVPath}
+		)
+	</insert>
+	
+	<!-- 插入 Topic(主题微博图片) -->
+	<insert id="insertTopicTweetImage" parameterType="cn.crawlerTweet.entity.TopicTweetImage">
+		INSERT INTO topicTweetImage (
+			id,
+			ttId,
+			topicImageUrl,
+			topicImageName
+		) VALUES(
+			#{id},
+			#{ttId},
+			#{topicImageUrl},
+			#{topicImageName}
+		)
+	</insert>
+
+	<!-- 采集完将state修改为0 -->
+	<update id="updateKeyWord" parameterType="int">
+		UPDATE
+			keywords
+		SET
+			state = 0
+		WHERE
+			id = #{id}
+	</update>
+
+
+	<!-- 将state修改为1 -->
+	<update id="updateKeyWords">
+		UPDATE
+			keywords
+		SET
+			state = 1
+	</update>
+</mapper>
